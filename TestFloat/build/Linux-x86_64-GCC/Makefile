@@ -36,7 +36,7 @@
 #=============================================================================
 
 SOURCE_DIR ?= ../../source
-SOFTFLOAT_DIR ?= ../../../SoftFloat-3e
+SOFTFLOAT_DIR ?= ../../../SoftFloat
 PLATFORM ?= Linux-x86_64-GCC
 
 SUBJ_SOURCE_DIR = $(SOURCE_DIR)/subj-C
