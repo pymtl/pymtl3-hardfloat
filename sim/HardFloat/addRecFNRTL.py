@@ -28,7 +28,7 @@ class addRecFNRTL( Placeholder, Component ):
 
     from os import path
     s.config_placeholder = VerilogPlaceholderConfigs(
-      src_file   = path.dirname(__file__) + 'source/addRecFN.v',
+      src_file   = path.dirname(__file__) + '/source/addRecFN.v',
       top_module = 'addRecFN',
       has_clk    = False,
       has_reset  = False,

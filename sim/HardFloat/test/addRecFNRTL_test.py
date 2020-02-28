@@ -4,7 +4,7 @@
 
 from pymtl3 import *
 from pymtl3.stdlib.test import run_test_vector_sim
-from hard_float.addRecFNRTL import addRecFNRTL 
+from HardFloat.addRecFNRTL import addRecFNRTL 
  
 
 def test_simple( dump_vcd, test_verilog ):
