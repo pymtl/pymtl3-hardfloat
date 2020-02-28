@@ -35,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =============================================================================*/
 
 `include "HardFloat_consts.vi"
-`include "HardFloat_specialize.vi"
+`include "ARM-VFPv2/HardFloat_specialize.vi"
 
 /*----------------------------------------------------------------------------
 *----------------------------------------------------------------------------*/
