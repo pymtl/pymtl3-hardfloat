@@ -8,8 +8,8 @@ from HardFloat.addRecFNRTL import addRecFNRTL
  
 
 def test_simple( dump_vcd, test_verilog ):
-  expWidth = 3
-  sigWidth = 3
+  expWidth = 8
+  sigWidth = 8
   run_test_vector_sim( addRecFNRTL(expWidth = expWidth, sigWidth = sigWidth), [
     ('subOp	 a  b  roundingMode  out*  exceptionFlags*'), 
 		[ b1(0), mk_bits(expWidth + sigWidth + 1)(0), mk_bits(expWidth + sigWidth + 1)(0), \

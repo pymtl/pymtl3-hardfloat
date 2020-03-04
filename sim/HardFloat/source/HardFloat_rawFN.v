@@ -37,6 +37,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `include "HardFloat_consts.vi"
 `include "HardFloat_specialize.vi"
 
+/* ===================== Adding some extra include files ================ */
+`include "RISCV/HardFloat_specialize.vi"
+/* ====================================================================== */
+
 /*----------------------------------------------------------------------------
 *----------------------------------------------------------------------------*/
 
