@@ -29,8 +29,13 @@ class addRecFNRTL( Placeholder, Component ):
     from os import path
     s.config_placeholder = VerilogPlaceholderConfigs(
       src_file   = path.dirname(__file__) + '/source/addRecFN.v',
+      #v_include  = [path.dirname(__file__) + '/source/RISCV'],
       top_module = 'addRecFN',
       has_clk    = False,
       has_reset  = False,
+    )
+
+    s.config_verilog_import = VerilatorImportConfigs(
+      vl_Wno_list = ['WIDTH', 'MODDUP'], # to surpress some Verilator warnings
     )
 
