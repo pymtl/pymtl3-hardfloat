@@ -34,12 +34,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =============================================================================*/
 
+/* ============= Added section to include some files ================== */
+// verilator lint_off MODDUP
+`include "includeFile.v"
+// verilator lint_on MODDUP
+/* ============================================================== */
+
 /*----------------------------------------------------------------------------
 *----------------------------------------------------------------------------*/
 
 module
     fNToRecFN#(parameter expWidth = 3, parameter sigWidth = 3) (
-        input [(expWidth + sigWidth - 1):0] in,
+        input [(expWidth + sigWidth - 1):0] in_,
         output [(expWidth + sigWidth):0] out
     );
 `include "HardFloat_localFuncs.vi"
@@ -52,7 +58,7 @@ module
     wire sign;
     wire [(expWidth - 1):0] expIn;
     wire [(sigWidth - 2):0] fractIn;
-    assign {sign, expIn, fractIn} = in;
+    assign {sign, expIn, fractIn} = in_;
     wire isZeroExpIn = (expIn == 0);
     wire isZeroFractIn = (fractIn == 0);
     /*------------------------------------------------------------------------

@@ -1,35 +1,30 @@
 #=========================================================================
-# Wrapper for HardFloat's addition and subtraction module
+# Wrapper for HardFloat's format conversion (from standard to recoded) module
 #=========================================================================
 
 from pymtl3 import *
 from pymtl3.passes.backends.verilog import \
     VerilogPlaceholderConfigs, VerilatorImportConfigs, TranslationConfigs
 
-class addRecFN( Placeholder, Component ):
+class fNToRecFN( Placeholder, Component ):
 
   # Constructor
 
   def construct( s, expWidth = 5, sigWidth = 11 ):
 
     # Interface
-	
-    s.control        = InPort ()
-    s.subOp          = InPort ()
-    s.a              = InPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.b              = InPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.roundingMode   = InPort ( Bits3 ) 
+
+    s.in_            = InPort ( mk_bits(expWidth + sigWidth) )
     
     s.out            = OutPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.exceptionFlags = OutPort ( Bits5 )
 
     # Configurations
 
     from os import path
     s.config_placeholder = VerilogPlaceholderConfigs(
-      src_file   = path.dirname(__file__) + '/source/addRecFN.v',
-      #v_include  = [path.dirname(__file__) + '/source/RISCV'],
-      top_module = 'addRecFN',
+      src_file   = path.dirname(__file__) + '/source/fNToRecFN.v',
+      #v_include  = [path.dirname(__file__) + '/source'],
+      top_module = 'fNToRecFN',
       has_clk    = False,
       has_reset  = False,
     )
