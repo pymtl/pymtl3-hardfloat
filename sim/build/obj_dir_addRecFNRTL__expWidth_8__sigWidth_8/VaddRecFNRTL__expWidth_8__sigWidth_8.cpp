@@ -56,7 +56,7 @@ void VaddRecFNRTL__expWidth_8__sigWidth_8::eval() {
             Verilated::debug(1);
             __Vchange = _change_request(vlSymsp);
             Verilated::debug(__Vsaved_debug);
-            VL_FATAL_MT("addRecFN.v", 260, "",
+            VL_FATAL_MT("addRecFN.v", 262, "",
                 "Verilated model didn't converge\n"
                 "- See DIDNOTCONVERGE in the Verilator manual");
         } else {
@@ -81,7 +81,7 @@ void VaddRecFNRTL__expWidth_8__sigWidth_8::_eval_initial_loop(VaddRecFNRTL__expW
             Verilated::debug(1);
             __Vchange = _change_request(vlSymsp);
             Verilated::debug(__Vsaved_debug);
-            VL_FATAL_MT("addRecFN.v", 260, "",
+            VL_FATAL_MT("addRecFN.v", 262, "",
                 "Verilated model didn't DC converge\n"
                 "- See DIDNOTCONVERGE in the Verilator manual");
         } else {

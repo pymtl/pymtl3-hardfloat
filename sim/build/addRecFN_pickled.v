@@ -158,6 +158,7 @@ endmodule
 `line 39 "addRecFN.v" 0
 
 /* ============= Added section to include some files ================== */
+// verilator lint_off MODDUP
 `line 1 "includeFile.v" 0
 /* ============= Added section to include some files ================== */
 `line 1 "HardFloat_rawFN.v" 0
@@ -1204,7 +1205,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `line 7 "includeFile.v" 0
 /* ============================================================== */
 
-`line 42 "addRecFN.v" 0
+`line 43 "addRecFN.v" 0
+// verilator lint_on MODDUP
 /* ============================================================== */
 
 /*----------------------------------------------------------------------------
@@ -1276,7 +1278,7 @@ function integer clog2;
 endfunction
 
 
-`line 63 "addRecFN.v" 0
+`line 65 "addRecFN.v" 0
 
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
