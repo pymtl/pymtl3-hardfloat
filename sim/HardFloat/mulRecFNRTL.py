@@ -16,7 +16,6 @@ class mulRecFNRTL( Placeholder, Component ):
     # Interface
 	
     s.control        = InPort ()
-    s.subOp          = InPort ()
     s.a              = InPort ( mk_bits(expWidth + sigWidth + 1) )
     s.b              = InPort ( mk_bits(expWidth + sigWidth + 1) )
     s.roundingMode   = InPort ( mk_bits(3) ) 
