@@ -63,6 +63,6 @@ class addFN( Component ):
     
   # Line tracing
   def line_trace( s ):
-    return f"{s.out}"
+    return f"a = {bin(s.a)}, b = {bin(s.b)} out = {bin(s.out)}"
     
         
