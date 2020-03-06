@@ -10,6 +10,8 @@ from pymtl3.passes.backends.verilog import VerilogPlaceholderPass
 from HardFloat.AddFNRTL import AddFN 
 from HardFloat.converter_funcs import floatToFN, fNToFloat
 
+import random
+
 # ========================================================================
 round_near_even   = 0b000
 round_minMag      = 0b001
@@ -18,16 +20,25 @@ round_max         = 0b011
 round_near_maxMag = 0b100
 round_odd         = 0b110
 
-# =================== Format of floating point number ===============
+# =================== Format of floating point number ====================
 # bin('0b' + '0' + '00000' + '0000000000')
 #      bin   sign   expon     significand
-# ===================================================================
+# ========================================================================
 
+# =========================== Helper functions ===========================
 def abs_val( x ):
   if(x < 0):
     return -x
   else:
     return x
+
+def get_rand( low, high, precision ):
+  val = round(random.uniform(low, high), precision)
+  while abs_val(val) < 1:
+    val = round(random.uniform(low, high), precision)
+    
+  return val
+# ========================================================================
 
 #-------------------------------------------------------------------------
 # TestVectorSimulator test
@@ -35,7 +46,6 @@ def abs_val( x ):
 def run_tv_test( dut, test_vectors, precision, tolerance ):
 
   # Define input/output functions
-
   def tv_in( dut, tv ):
     dut.subOp        = tv[0]
     dut.a            = tv[1]
@@ -57,289 +67,489 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
   sim = TestVectorSimulator( dut, test_vectors, tv_in, tv_out )
   sim.run_test()
 
+# ====================== Tests for half-precision ========================
+expWidth = 5
+sigWidth = 11
+precision = expWidth + sigWidth
+tolerance = 0.001
+
+B1  = mk_bits(1)
+B3  = mk_bits(3)
+BN  = mk_bits(expWidth + sigWidth)
+  
 def test_addF16_ones():
-  
-  expWidth = 5
-  sigWidth = 11
-  precision = expWidth + sigWidth
-  tolerance = 0.01
-  
-  B1  = mk_bits(1)
-  B3  = mk_bits(3)
-  BN  = mk_bits(expWidth + sigWidth)
   
   a = 1.0
   b = 1.0
   out = a + b
   
-  a = int(('0b' + floatToFN(a, precision)), 2)
-  b = int(('0b' + floatToFN(b, precision)), 2)
-  out = int(('0b' + floatToFN(out, precision)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp   a         b         roundingMode   out*'),
     [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
 ],  precision, tolerance)
 
-# =================== Useful functions for formatting ================
-get_bin = lambda x, n: format(x, 'b').zfill(n)
-# ====================================================================
-def test_addF16_zero( dump_vcd, test_verilog ):
+def test_addF16_positive_positive():
   
-  expWidth = 5
-  sigWidth = 11
-  
-  a   = int('0b' + '0' + '00000' + '0000000000', 2)
-  b   = int('0b' + '0' + '00000' + '0000000000', 2)
-  out = int('0b' + '0' + '00000' + '0000000000', 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_addF16_positive_positive( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = 12.98
-  b = 89.73
+  a = 17.61
+  b = 51.41
   out = a + b
   
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_addF16_positive_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = 26.5921
-  b = -19.02
-  out = a + b
-  
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_addF16_negative_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = -95.184
-  b = -5.30
-  out = a + b
-  
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_subF16_zero( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a   = int('0b' + '0' + '00000' + '0000000000', 2)
-  b   = int('0b' + '0' + '00000' + '0000000000', 2)
-  out = int('0b' + '0' + '00000' + '0000000000', 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_subF16_positive_positive( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = 26.67
-  b = 5.482
-  out = a - b
-  
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_subF16_positive_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = 78.576
-  b = -11.68
-  out = a - b
-  
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
-  
-def test_subF16_negative_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 5
-  sigWidth = 11
-  
-  a = -86.9
-  b = -44.81
-  out = a - b
-  
-  a = int(('0b' + floatToFN(a, 16)), 2)
-  b = int(('0b' + floatToFN(b, 16)), 2)
-  out = int(('0b' + floatToFN(out, 16)), 2)
-  
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
 
-def test_addF32_positive_positive( dump_vcd, test_verilog ):
+def test_addF16_positive_negative():
   
-  expWidth = 8
-  sigWidth = 23
-  
-  a = 84.10
-  b = 12.4111
+  a = 15.0
+  b = -64.2
   out = a + b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF16_negative_negative():
   
-def test_addF32_positive_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 8
-  sigWidth = 23
-  
-  a = 596.193
-  b = -1994.291
+  a = -17.61
+  b = -51.41
   out = a + b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF16_positive_positive():
   
-def test_addF32_negative_negative( dump_vcd, test_verilog ):
+  a = 17.61
+  b = 231.41
+  out = a - b
   
-  expWidth = 8
-  sigWidth = 23
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  a = -131.924
-  b = -259.10
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF16_positive_negative():
+  
+  a = 15.0
+  b = -64.2
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF16_negative_negative():
+  
+  a = -127.41
+  b = -451.61
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+# ========================================================================
+
+# ====================== Tests for single-precision ======================
+expWidth = 8
+sigWidth = 23
+precision = expWidth + sigWidth
+tolerance = 0.0001
+
+BN  = mk_bits(expWidth + sigWidth)
+  
+def test_addF32_ones():
+  
+  a = 1.0
+  b = 1.0
   out = a + b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(0), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF32_positive_positive():
   
-def test_subF32_positive_positive( dump_vcd, test_verilog ):
+  a = 486.102
+  b = 591.3031
+  out = a + b
   
-  expWidth = 8
-  sigWidth = 23
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  a = 25.61
-  b = 5.129
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF32_positive_negative():
+  
+  a = 19284.1
+  b = -581.875
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF32_negative_negative():
+  
+  a = -385.01
+  b = -591.2021
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF32_positive_positive():
+  
+  a = 1.29301
+  b = 12.5910
   out = a - b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF32_positive_negative():
   
-def test_subF32_positive_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 8
-  sigWidth = 23
-  
-  a = 182.401
-  b = -41.531
+  a = 82.40910
+  b = -120.5
   out = a - b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF32_negative_negative():
   
-def test_subF32_negative_negative( dump_vcd, test_verilog ):
-  
-  expWidth = 8
-  sigWidth = 23
-  
-  a = -12.41
-  b = -41.212
+  a = -692.21
+  b = -12.49102
   out = a - b
   
-  a = int(('0b' + floatToFN(a, 32)), 2)
-  b = int(('0b' + floatToFN(b, 32)), 2)
-  out = int(('0b' + floatToFN(out, 32)), 2)
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
   
-  run_test_vector_sim( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-    ('subOp  a   b   roundingMode   out*'), 
-		[ b1(1), mk_bits(expWidth + sigWidth)(a), mk_bits(expWidth + sigWidth)(b),  \
-      b3(round_near_even), mk_bits(expWidth + sigWidth)(out) ]
-  ], dump_vcd, test_verilog )
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+# ========================================================================
+
+# ====================== Tests for double-precision ======================
+expWidth = 11
+sigWidth = 53
+precision = expWidth + sigWidth
+tolerance = 0.000001
+
+BN  = mk_bits(expWidth + sigWidth)
+  
+def test_addF64_ones():
+  
+  a = 1.0
+  b = 1.0
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF64_positive_positive():
+  
+  a = 1829591.29201
+  b = 58285.0291
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF64_positive_negative():
+  
+  a = 288.999102
+  b = -12.59101
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_addF64_negative_negative():
+  
+  a = -192.491023
+  b = -5.92929192931823
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF64_positive_positive():
+  
+  a = 18298481.949102
+  b = 55.1022
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF64_positive_negative():
+  
+  a = 1829.5982182
+  b = -239484.000192
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+
+def test_subF64_negative_negative():
+  
+  a = -58182.1913
+  b = -1293.10092
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+    #  subOp   a         b         roundingMode   out*'),
+    [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+],  precision, tolerance)
+# ========================================================================
+
+# ================= Random testing for half-precision ====================
+expWidth = 5
+sigWidth = 11
+precision = expWidth + sigWidth
+tolerance = 0.0001
+
+BN  = mk_bits(expWidth + sigWidth)
+
+random.seed(precision)
+
+def test_addF16_random():
+  
+  test_vector = []
+  
+  for test in range(10):
+    a = get_rand(-22.5, 45.5, 2)
+    b = get_rand(-22.5, 45.5, 2)
+    out = a + b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(0), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+  
+def test_subF16_random():
+  
+  test_vector = []
+  
+  for test in range(100):
+    a = get_rand(-22.5, 45.5, 2)
+    b = get_rand(-22.5, 45.5, 2)
+    out = a - b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(1), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+# ========================================================================
+
+# ================= Random testing for single-precision ==================
+expWidth = 8
+sigWidth = 23
+precision = expWidth + sigWidth
+tolerance = 0.00001
+
+BN  = mk_bits(expWidth + sigWidth)
+
+random.seed(precision)
+
+def test_addF32_random():
+  
+  test_vector = []
+  
+  for test in range(100):
+    a = get_rand(-1000.0, 1000.0, 4)
+    b = get_rand(-1000.0, 1000.0, 4)
+    out = a + b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(0), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+
+def test_subF32_random():
+  
+  test_vector = []
+  
+  for test in range(100):
+    a = get_rand(-10000.0, 10000.0, 4)
+    b = get_rand(-10000.0, 10000.0, 4)
+    out = a - b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(1), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+# ========================================================================
+
+# ================= Random testing for double-precision ==================
+expWidth = 11
+sigWidth = 53
+precision = expWidth + sigWidth
+tolerance = 0.000001
+
+BN  = mk_bits(expWidth + sigWidth)
+
+random.seed(precision)
+
+def test_addF64_random():
+  
+  test_vector = []
+  
+  for test in range(100):
+    a = get_rand(-1000000.0, 1000000.0, 6)
+    b = get_rand(-1000000.0, 1000000.0, 6)
+    out = a + b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(0), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+
+def test_subF64_random():
+  
+  test_vector = []
+  
+  for test in range(100):
+    a = get_rand(-3000.0, 3000.0, 6)
+    b = get_rand(-3000.0, 3000.0, 6)
+    out = a - b
+  
+    a = floatToFN(a, precision)
+    b = floatToFN(b, precision)
+    out = floatToFN(out, precision)
+    
+    test_vector.append([B1(1), BN(a), BN(b), B3(0), BN(out)])
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
+  test_vector,  precision, tolerance)
+# ========================================================================
 
 

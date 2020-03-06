@@ -128,11 +128,13 @@ def floatToFN( n, precision ) :
   value = str(sign) + exp_bin + mantissa
   
   # return the answer to the driver code 
-  return (value) 
+  return (int(value, 2)) 
 # ========================================================================
 
 # ========= IEEE-754 format to Floating-point number converter ===========
 def fNToFloat( n, precision ) : 
+  
+  n = bin(n)[2:].zfill(precision) # converting number to string
   
   # used to access arrays of exponent and mantissa
   index = int(math.log2(precision)) - 4 
@@ -160,21 +162,21 @@ def fNToFloat( n, precision ) :
   
   
   # return the answer to the driver code 
-  return (str(num)) 
+  return (num) 
 # ========================================================================
 
 # Driver Code 
 if __name__ == "__main__" : 
   
-  num = 12.90
-    
+  num = 105.98
+  precision = 16
+  
   print('\nInitial number: ' + str(num))
   
-  a = floatToFN(num, 32)
-  print('\nBinary number: ' + a)
+  a = floatToFN(num, precision)
+  print('\nBinary number: ' + str(bin(a)[2:].zfill(precision)))
     
-  b = fNToFloat(a, 32)
-  print('\nFloating-point number: ' + b + '\n')
-
+  b = fNToFloat(a, precision)
+  print('\nFloating-point number: ' + str(b) + '\n')
 
 
