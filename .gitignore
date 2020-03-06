@@ -5,3 +5,5 @@ testfloat_gen
 testfloat_ver
 testsoftfloat
 timesoftfloat
+build/*
+__pycache__
