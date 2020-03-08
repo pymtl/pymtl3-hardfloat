@@ -337,7 +337,7 @@ def test_mulF32_random():
 expWidth = 11
 sigWidth = 53
 precision = expWidth + sigWidth
-tolerance = 0.000001
+tolerance = 0.00001
 
 BN  = mk_bits(expWidth + sigWidth)
 
