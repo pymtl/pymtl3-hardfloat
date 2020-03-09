@@ -1,12 +1,17 @@
 #=========================================================================
-# Unit testing for addFNRTL PyMTL wrapper module 
+# Unit testing for AddFNRTL PyMTL wrapper module 
 #=========================================================================
 
 from pymtl3 import *
 from pymtl3.stdlib.test import run_test_vector_sim
 from pymtl3.stdlib.test import TestVectorSimulator
 from pymtl3.passes.backends.verilog import VerilogPlaceholderPass
-    
+
+import hypothesis
+from hypothesis import given
+from hypothesis import strategies as st
+from hypothesis import settings
+
 from HardFloat.AddFNRTL import AddFN 
 from HardFloat.converter_funcs import floatToFN, fNToFloat
 
@@ -185,7 +190,7 @@ def test_subF16_negative_negative():
 
 # ====================== Tests for single-precision ======================
 expWidth = 8
-sigWidth = 23
+sigWidth = 24
 precision = expWidth + sigWidth
 tolerance = 0.0001
 
@@ -460,7 +465,7 @@ def test_subF16_random():
 
 # ================= Random testing for single-precision ==================
 expWidth = 8
-sigWidth = 23
+sigWidth = 24
 precision = expWidth + sigWidth
 tolerance = 0.00001
 
@@ -552,4 +557,120 @@ def test_subF64_random():
   test_vector,  precision, tolerance)
 # ========================================================================
 
+# ================= Half-precision hypothesis testing ====================
+expWidth = 5
+sigWidth = 11
+precision = expWidth + sigWidth
+tolerance = 0.00001
+
+@given( a = st.floats(min_value = -10000.0, max_value = 10000.0),
+        b = st.floats(min_value = -10000.0, max_value = 10000.0))
+@settings(deadline = None)
+def test_hypothesis_addF16( a, b ):
+  
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+  
+@given( a = st.floats(min_value = -3e-5, max_value = 1e+15),
+        b = st.floats(min_value = -3e-5, max_value = 1e+15))
+@settings(deadline = None)
+def test_hypothesis_subF16( a, b ):
+  
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+# ========================================================================
+
+# ================ Single-precision hypothesis testing ===================
+expWidth = 8
+sigWidth = 24
+precision = expWidth + sigWidth
+tolerance = 0.00000001
+
+@given( a = st.floats(min_value=6e-39, max_value=6e+38),
+        b = st.floats(min_value=6e-39, max_value=6e+38))
+@settings(deadline = None)
+def test_hypothesis_addF32( a, b ):
+  
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+  
+@given( a = st.floats(min_value=6e-39, max_value=6e+38),
+        b = st.floats(min_value=6e-39, max_value=6e+38))
+@settings(deadline = None)
+def test_hypothesis_subF32( a, b ):
+  
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+# ========================================================================
+
+# ================ Single-precision hypothesis testing ===================
+expWidth = 11
+sigWidth = 53
+precision = expWidth + sigWidth
+tolerance = 0.00000000001
+
+@given( a = st.floats(min_value=7e-308, max_value=7e+307),
+        b = st.floats(min_value=7e-308, max_value=7e+307))
+@settings(deadline = None)
+def test_hypothesis_addF64( a, b ):
+  
+  out = a + b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+
+@given( a = st.floats(min_value=7e-308, max_value=7e+307),
+        b = st.floats(min_value=7e-308, max_value=7e+307))
+@settings(deadline = None)
+def test_hypothesis_subF64( a, b ):
+  
+  out = a - b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  subOp   a         b         roundingMode   out*'),
+      [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+# ========================================================================
 

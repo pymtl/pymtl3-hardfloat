@@ -65,69 +65,113 @@ get_bin = lambda x, n: format(x, 'b').zfill(n)
 # ========= Floating-point number to IEEE-754 format converter ===========
 def floatToFN( n, precision ) : 
   
-  # used to access arrays of exponent and mantissa
+  # Base case of 0 (easier to implement this way)
+  if(n == 0):
+    return 0
+    
+  # Used to access arrays of exponent and mantissa
   index = int(math.log2(precision)) - 4 
     
-  # identifying whether the number is positive or negative 
+  # Identifying whether the number is positive or negative 
   sign = '0'
   if n < 0 : 
       sign = '1'
       n = n * (-1) 
   
-  #print('sign = ' + sign)
+  # If integer, change to float
+  if str(n).find('.') == -1: # integer
+    n_str = str(n) + '.0'
+  else:
+    n_str = str(n)  
       
-  # ================ Exponent part =================
-  whole, dec = str(n).split(".")
+  format_str = '.' + str(precision * 2) + 'f' # case of e- 
+  n = format(n, format_str)
+    
+  whole, dec = n.split(".")
   
+# =========================== Exponent part ============================
   whole = int(whole)
-  rem = []
+  exp_raw_bin = []
   
   if(whole != 0):
     while(whole != 1):
-      rem.insert(0, whole % 2)
+      exp_raw_bin.insert(0, whole % 2)
       whole = int(whole / 2)
     
-    rem.insert(0, 1)
-  else:
-    rem.insert(0, 1)
-  
-  rem_print = ''.join([str(elem) for elem in rem])
-  #print('exp_raw_bin = ' + rem_print)
-  
-  exp_raw = len(rem) - 1
-  #print('exp_raw = ' + str(exp_raw))
-  
-  exp_bin = (2 ** (exp_width[index] - 1)) - 1 + exp_raw 
-  exp_bin = str(get_bin(exp_bin, exp_width[index]))
+    exp_raw_bin.insert(0, 1)
     
-  #print('exp_bin = ' + exp_bin)
-  
-  # ================= Mantissa part ===================
+    exp_len = len(exp_raw_bin) - 1
+    
+  else:
+    exp_raw_bin.insert(0, 0)
+    exp_len = 1
+      
+  exp_raw_bin = ''.join([str(elem) for elem in exp_raw_bin]) 
+   
+  # ========================= Mantissa part ==============================
   mantissa_raw = []
   dec = '0.' + dec
+  frac = '1'
+  bit_idx = 0
+  bit_idx_max = 1000 # fixed (for very large/small numbers
   
-  for i in range(mantissa_width[index] - exp_raw):
-    tmp = float(dec) * 2
-    intg, frac = str(tmp).split(".")
+  while bit_idx < bit_idx_max:
     
-    mantissa_raw.append(intg)
-    
-    dec = '0.' + frac
-    
-  mantissa_raw_print = ''.join([str(elem) for elem in mantissa_raw])
-  #print('mantissa_raw = ' + mantissa_raw_print)
-  
-  for i in range(len(rem)):
+    if(int(frac, 10) == 0):
+      mantissa_raw.append('0')
+    else:
+      tmp_dec = float(dec) * 2
+            
+      tmp_dec = format(tmp_dec, format_str)
+            
+      intg, frac = tmp_dec.split(".")
+      intg = intg.replace(" ", "") # formatting
+            
+      mantissa_raw.append(intg)
+        
+      dec = '0.' + frac
+      
+    bit_idx = bit_idx + 1
+      
+  for i in range(len(exp_raw_bin)):
     if (i != 0):
-      mantissa_raw.insert(i-1, rem[i])
+      mantissa_raw.insert(i-1, exp_raw_bin[i])
   
-  mantissa = ''.join([str(elem) for elem in mantissa_raw])
-  #print('mantissa = ' + mantissa)
+  mantissa_raw_orig = ''.join([str(elem) for elem in mantissa_raw])
   
-  # =============== Merging together =================
-  value = str(sign) + exp_bin + mantissa
-  
-  # return the answer to the driver code 
+  # ========================= Merging together ===========================
+  if(exp_raw_bin == '0'): # for |num| < 1 
+    
+    if not('1' in mantissa_raw):
+      return 0 # number too small, rounded down to 0
+    else:  
+      exp_idx_raw = mantissa_raw.index('1') + 1
+      exp_idx = (-exp_idx_raw) 
+          
+      exp_raw = (2 ** (exp_width[index] - 1)) - 1 + exp_idx
+      
+      exp_bin = str(get_bin(exp_raw, exp_width[index]))
+            
+      ext_zeroes = ['0' for i in range(exp_idx_raw + exp_len)]
+          
+      mantissa_raw = mantissa_raw[exp_idx_raw:]
+      mantissa_raw.extend(ext_zeroes)
+      mantissa = mantissa_raw[:mantissa_width[index]]
+    
+    mantissa = ''.join([str(elem) for elem in mantissa])
+            
+    value = str(sign) + exp_bin + mantissa
+    
+  else: # any other number
+    
+    exp_raw = (2 ** (exp_width[index] - 1)) - 1 + exp_len   
+    exp_bin = str(get_bin(exp_raw, exp_width[index]))
+        
+    mantissa = mantissa_raw_orig[:mantissa_width[index]]
+    
+    value = str(sign) + exp_bin + mantissa
+    
+  # Return converted number
   return (int(value, 2)) 
 # ========================================================================
 
@@ -136,47 +180,27 @@ def fNToFloat( n, precision ) :
   
   n = bin(n)[2:].zfill(precision) # converting number to string
   
-  # used to access arrays of exponent and mantissa
+  # Used to access arrays of exponent and mantissa
   index = int(math.log2(precision)) - 4 
     
   sign = int(n[0])
-  #print('sign = ' + str(sign))
   
   exp_raw = n[1:(exp_width[index]+1)]
-  #print('exp_raw = ', exp_raw)
   
   exp = int(exp_raw, 2) - (2 ** (exp_width[index] - 1) - 1)
-  #print('exp = ' + str(exp))
   
   mantissa_raw = n[(exp_width[index]+1) : precision]
-  #print('mantissa_raw = ', mantissa_raw)
   
   mantissa = 1
   for i in range(len(mantissa_raw)):
     if(mantissa_raw[i] == '1'):
       mantissa = mantissa + 2**(-i-1)
-  
-  #print('mantissa = ', mantissa)
-  
+    
   num = ((-1)**(sign)) * (mantissa) * (2**(exp))
   
-  
-  # return the answer to the driver code 
+  # Return converted number
   return (num) 
 # ========================================================================
 
-# Driver Code 
-if __name__ == "__main__" : 
-  
-  num = 105.98
-  precision = 16
-  
-  print('\nInitial number: ' + str(num))
-  
-  a = floatToFN(num, precision)
-  print('\nBinary number: ' + str(bin(a)[2:].zfill(precision)))
-    
-  b = fNToFloat(a, precision)
-  print('\nFloating-point number: ' + str(b) + '\n')
 
 
