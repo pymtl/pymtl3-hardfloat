@@ -73,17 +73,18 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
   sim.run_test()
 
 # ====================== Tests for half-precision ========================
-expWidth = 5
-sigWidth = 11
-precision = expWidth + sigWidth
-tolerance = 0.001
-
 B1  = mk_bits(1)
 B3  = mk_bits(3)
-BN  = mk_bits(expWidth + sigWidth)
   
 def test_addF16_ones():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a + b
@@ -98,6 +99,13 @@ def test_addF16_ones():
 ],  precision, tolerance)
 
 def test_addF16_positive_positive():
+  
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 17.61
   b = 51.41
@@ -114,6 +122,13 @@ def test_addF16_positive_positive():
 
 def test_addF16_positive_negative():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 15.0
   b = -64.2
   out = a + b
@@ -128,6 +143,13 @@ def test_addF16_positive_negative():
 ],  precision, tolerance)
 
 def test_addF16_negative_negative():
+  
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = -17.61
   b = -51.41
@@ -144,6 +166,13 @@ def test_addF16_negative_negative():
 
 def test_subF16_positive_positive():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 17.61
   b = 231.41
   out = a - b
@@ -158,6 +187,13 @@ def test_subF16_positive_positive():
 ],  precision, tolerance)
 
 def test_subF16_positive_negative():
+  
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 15.0
   b = -64.2
@@ -174,6 +210,13 @@ def test_subF16_positive_negative():
 
 def test_subF16_negative_negative():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = -127.41
   b = -451.61
   out = a - b
@@ -189,15 +232,15 @@ def test_subF16_negative_negative():
 # ========================================================================
 
 # ====================== Tests for single-precision ======================
-expWidth = 8
-sigWidth = 24
-precision = expWidth + sigWidth
-tolerance = 0.0001
-
-BN  = mk_bits(expWidth + sigWidth)
-  
 def test_addF32_ones():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a + b
@@ -212,6 +255,13 @@ def test_addF32_ones():
 ],  precision, tolerance)
 
 def test_addF32_positive_positive():
+  
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 486.102
   b = 591.3031
@@ -228,6 +278,13 @@ def test_addF32_positive_positive():
 
 def test_addF32_positive_negative():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 19284.1
   b = -581.875
   out = a + b
@@ -242,6 +299,13 @@ def test_addF32_positive_negative():
 ],  precision, tolerance)
 
 def test_addF32_negative_negative():
+  
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = -385.01
   b = -591.2021
@@ -258,6 +322,13 @@ def test_addF32_negative_negative():
 
 def test_subF32_positive_positive():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 1.29301
   b = 12.5910
   out = a - b
@@ -272,6 +343,13 @@ def test_subF32_positive_positive():
 ],  precision, tolerance)
 
 def test_subF32_positive_negative():
+  
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 82.40910
   b = -120.5
@@ -288,6 +366,13 @@ def test_subF32_positive_negative():
 
 def test_subF32_negative_negative():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.0001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = -692.21
   b = -12.49102
   out = a - b
@@ -303,15 +388,15 @@ def test_subF32_negative_negative():
 # ========================================================================
 
 # ====================== Tests for double-precision ======================
-expWidth = 11
-sigWidth = 53
-precision = expWidth + sigWidth
-tolerance = 0.000001
-
-BN  = mk_bits(expWidth + sigWidth)
-  
 def test_addF64_ones():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a + b
@@ -326,6 +411,13 @@ def test_addF64_ones():
 ],  precision, tolerance)
 
 def test_addF64_positive_positive():
+  
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 1829591.29201
   b = 58285.0291
@@ -342,6 +434,13 @@ def test_addF64_positive_positive():
 
 def test_addF64_positive_negative():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 288.999102
   b = -12.59101
   out = a + b
@@ -356,6 +455,13 @@ def test_addF64_positive_negative():
 ],  precision, tolerance)
 
 def test_addF64_negative_negative():
+  
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = -192.491023
   b = -5.92929192931823
@@ -372,6 +478,13 @@ def test_addF64_negative_negative():
 
 def test_subF64_positive_positive():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 18298481.949102
   b = 55.1022
   out = a - b
@@ -386,6 +499,13 @@ def test_subF64_positive_positive():
 ],  precision, tolerance)
 
 def test_subF64_positive_negative():
+  
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 1829.5982182
   b = -239484.000192
@@ -402,6 +522,13 @@ def test_subF64_positive_negative():
 
 def test_subF64_negative_negative():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = -58182.1913
   b = -1293.10092
   out = a - b
@@ -416,65 +543,18 @@ def test_subF64_negative_negative():
 ],  precision, tolerance)
 # ========================================================================
 
-# ================= Random testing for half-precision ====================
-expWidth = 5
-sigWidth = 11
-precision = expWidth + sigWidth
-tolerance = 0.0001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
-def test_addF16_random():
-  
-  test_vector = []
-  
-  for test in range(10):
-    a = get_rand(-22.5, 45.5, 2)
-    b = get_rand(-22.5, 45.5, 2)
-    out = a + b
-  
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
-    
-    test_vector.append([B1(0), BN(a), BN(b), B3(0), BN(out)])
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
-  test_vector,  precision, tolerance)
-  
-def test_subF16_random():
-  
-  test_vector = []
-  
-  for test in range(100):
-    a = get_rand(-22.5, 45.5, 2)
-    b = get_rand(-22.5, 45.5, 2)
-    out = a - b
-  
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
-    
-    test_vector.append([B1(1), BN(a), BN(b), B3(0), BN(out)])
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), 
-  test_vector,  precision, tolerance)
-# ========================================================================
-
 # ================= Random testing for single-precision ==================
-expWidth = 8
-sigWidth = 24
-precision = expWidth + sigWidth
-tolerance = 0.00001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
 def test_addF32_random():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(precision)
+
   test_vector = []
   
   for test in range(100):
@@ -493,11 +573,20 @@ def test_addF32_random():
 
 def test_subF32_random():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(precision)
+  
   test_vector = []
   
   for test in range(100):
-    a = get_rand(-10000.0, 10000.0, 4)
-    b = get_rand(-10000.0, 10000.0, 4)
+    a = get_rand(-1000.0, 1000.0, 4)
+    b = get_rand(-1000.0, 1000.0, 4)
     out = a - b
   
     a = floatToFN(a, precision)
@@ -511,17 +600,17 @@ def test_subF32_random():
 # ========================================================================
 
 # ================= Random testing for double-precision ==================
-expWidth = 11
-sigWidth = 53
-precision = expWidth + sigWidth
-tolerance = 0.000001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
 def test_addF64_random():
-  
+    
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(a=None) # uses current system time for seed
+
   test_vector = []
   
   for test in range(100):
@@ -540,6 +629,15 @@ def test_addF64_random():
 
 def test_subF64_random():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(a=None) # uses current system time for seed
+  
   test_vector = []
   
   for test in range(100):
@@ -557,95 +655,19 @@ def test_subF64_random():
   test_vector,  precision, tolerance)
 # ========================================================================
 
-# ================= Half-precision hypothesis testing ====================
-expWidth = 5
-sigWidth = 11
-precision = expWidth + sigWidth
-tolerance = 0.00001
-
-@given( a = st.floats(min_value = -10000.0, max_value = 10000.0),
-        b = st.floats(min_value = -10000.0, max_value = 10000.0))
-@settings(deadline = None)
-def test_hypothesis_addF16( a, b ):
-  
-  out = a + b
-  
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-      #  subOp   a         b         roundingMode   out*'),
-      [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
-  ],  precision, tolerance)
-  
-@given( a = st.floats(min_value = -3e-5, max_value = 1e+15),
-        b = st.floats(min_value = -3e-5, max_value = 1e+15))
-@settings(deadline = None)
-def test_hypothesis_subF16( a, b ):
-  
-  out = a - b
-  
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-      #  subOp   a         b         roundingMode   out*'),
-      [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
-  ],  precision, tolerance)
-# ========================================================================
-
-# ================ Single-precision hypothesis testing ===================
-expWidth = 8
-sigWidth = 24
-precision = expWidth + sigWidth
-tolerance = 0.00000001
-
-@given( a = st.floats(min_value=6e-39, max_value=6e+38),
-        b = st.floats(min_value=6e-39, max_value=6e+38))
-@settings(deadline = None)
-def test_hypothesis_addF32( a, b ):
-  
-  out = a + b
-  
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-      #  subOp   a         b         roundingMode   out*'),
-      [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
-  ],  precision, tolerance)
-  
-@given( a = st.floats(min_value=6e-39, max_value=6e+38),
-        b = st.floats(min_value=6e-39, max_value=6e+38))
-@settings(deadline = None)
-def test_hypothesis_subF32( a, b ):
-  
-  out = a - b
-  
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
-  
-  run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
-      #  subOp   a         b         roundingMode   out*'),
-      [  B1(1),  BN(a),    BN(b),    B3(0),         BN(out), ],
-  ],  precision, tolerance)
-# ========================================================================
-
-# ================ Single-precision hypothesis testing ===================
-expWidth = 11
-sigWidth = 53
-precision = expWidth + sigWidth
-tolerance = 0.00000000001
-
-@given( a = st.floats(min_value=7e-308, max_value=7e+307),
-        b = st.floats(min_value=7e-308, max_value=7e+307))
+# ================ Double-precision hypothesis testing ===================
+@given( a = st.floats(min_value=-7e-308, max_value=7e+307),
+        b = st.floats(min_value=-7e-308, max_value=7e+307))
 @settings(deadline = None)
 def test_hypothesis_addF64( a, b ):
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.00000000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+  
   out = a + b
   
   a = floatToFN(a, precision)
@@ -657,10 +679,17 @@ def test_hypothesis_addF64( a, b ):
       [  B1(0),  BN(a),    BN(b),    B3(0),         BN(out), ],
   ],  precision, tolerance)
 
-@given( a = st.floats(min_value=7e-308, max_value=7e+307),
-        b = st.floats(min_value=7e-308, max_value=7e+307))
+@given( a = st.floats(min_value=-7e-308, max_value=7e+307),
+        b = st.floats(min_value=-7e-308, max_value=7e+307))
 @settings(deadline = None)
 def test_hypothesis_subF64( a, b ):
+
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.00000000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   out = a - b
   

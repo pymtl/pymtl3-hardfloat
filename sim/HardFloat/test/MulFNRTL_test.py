@@ -6,7 +6,12 @@ from pymtl3 import *
 from pymtl3.stdlib.test import run_test_vector_sim
 from pymtl3.stdlib.test import TestVectorSimulator
 from pymtl3.passes.backends.verilog import VerilogPlaceholderPass
-    
+
+import hypothesis
+from hypothesis import given
+from hypothesis import strategies as st
+from hypothesis import settings
+
 from HardFloat.MulFNRTL import MulFN 
 from HardFloat.converter_funcs import floatToFN, fNToFloat
 
@@ -34,8 +39,6 @@ def abs_val( x ):
 
 def get_rand( low, high, precision ):
   val = round(random.uniform(low, high), precision)
-  while abs_val(val) < 1:
-    val = round(random.uniform(low, high), precision)
     
   return val
 # ========================================================================
@@ -69,17 +72,19 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
 # ======================================================================== 
 
 # ====================== Tests for half-precision ========================
-expWidth = 5
-sigWidth = 11
-precision = expWidth + sigWidth
-tolerance = 0.001
 
 B1  = mk_bits(1)
 B3  = mk_bits(3)
-BN  = mk_bits(expWidth + sigWidth)
   
 def test_mulF16_ones():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+  
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a * b
@@ -94,6 +99,13 @@ def test_mulF16_ones():
 ],  precision, tolerance)
 
 def test_mulF16_positive_positive():
+  
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+  
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 17.61
   b = 51.41
@@ -110,6 +122,13 @@ def test_mulF16_positive_positive():
 
 def test_mulF16_positive_negative():
   
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+  
+  BN  = mk_bits(expWidth + sigWidth)
+  
   a = 15.0
   b = -64.2
   out = a * b
@@ -124,6 +143,13 @@ def test_mulF16_positive_negative():
 ],  precision, tolerance)
 
 def test_mulF16_negative_negative():
+  
+  expWidth = 5
+  sigWidth = 11
+  precision = expWidth + sigWidth
+  tolerance = 0.001
+  
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = -17.61
   b = -51.41
@@ -143,6 +169,13 @@ def test_mulF16_negative_negative():
 # ====================== Tests for single-precision ========================
 def test_mulF32_ones():
   
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a * b
@@ -157,6 +190,13 @@ def test_mulF32_ones():
 ],  precision, tolerance)
 
 def test_mulF32_positive_positive():
+
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 486.102
   b = 591.3031
@@ -172,6 +212,13 @@ def test_mulF32_positive_positive():
 ],  precision, tolerance)
 
 def test_mulF32_positive_negative():
+
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 19284.1
   b = -581.875
@@ -187,9 +234,16 @@ def test_mulF32_positive_negative():
 ],  precision, tolerance)
 
 def test_mulF32_negative_negative():
+
+  expWidth = 8
+  sigWidth = 24
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
-  a = -385.01
-  b = -591.2021
+  a = -185.01
+  b = -121.221
   out = a * b
   
   a = floatToFN(a, precision)
@@ -204,15 +258,15 @@ def test_mulF32_negative_negative():
 # ========================================================================
 
 # ====================== Tests for double-precision ======================
-expWidth = 11
-sigWidth = 53
-precision = expWidth + sigWidth
-tolerance = 0.000001
-
-BN  = mk_bits(expWidth + sigWidth)
-  
 def test_mulF64_ones():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
   a = 1.0
   b = 1.0
   out = a * b
@@ -227,6 +281,13 @@ def test_mulF64_ones():
 ],  precision, tolerance)
 
 def test_mulF64_positive_positive():
+
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
   
   a = 1829591.29201
   b = 58285.0291
@@ -242,7 +303,14 @@ def test_mulF64_positive_positive():
 ],  precision, tolerance)
 
 def test_mulF64_positive_negative():
-  
+
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+    
   a = 288.999102
   b = -12.59101
   out = a * b
@@ -257,7 +325,14 @@ def test_mulF64_positive_negative():
 ],  precision, tolerance)
 
 def test_mulF64_negative_negative():
-  
+
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+
+  BN  = mk_bits(expWidth + sigWidth)
+    
   a = -192.491023
   b = -5.92929192931823
   out = a * b
@@ -273,53 +348,23 @@ def test_mulF64_negative_negative():
 
 # ========================================================================
 
-# ================= Random testing for half-precision ====================
-expWidth = 5
-sigWidth = 11
-precision = expWidth + sigWidth
-tolerance = 0.0001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
-def test_mulF16_random():
-  
-  test_vector = []
-  
-  for test in range(10):
-    a = get_rand(-22.5, 45.5, 2)
-    b = get_rand(-22.5, 45.5, 2)
-    out = a * b
-  
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
-    
-    test_vector.append([BN(a), BN(b), B3(0), BN(out)])
-  
-  run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), 
-  test_vector,  precision, tolerance)
-  
-# ========================================================================
-
 # ================= Random testing for single-precision ==================
-expWidth = 8
-sigWidth = 23
-precision = expWidth + sigWidth
-tolerance = 0.00001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
 def test_mulF32_random():
   
+  expWidth = 8
+  sigWidth = 23
+  precision = expWidth + sigWidth
+  tolerance = 0.00001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(a=None) # uses current system time for seed
+
   test_vector = []
   
-  for test in range(100):
-    a = get_rand(-1000.0, 1000.0, 4)
-    b = get_rand(-1000.0, 1000.0, 4)
+  for test in range(1000):
+    a = get_rand(-100000.0, 100000.0, 4)
+    b = get_rand(-100000.0, 100000.0, 4)
     out = a * b
   
     a = floatToFN(a, precision)
@@ -334,20 +379,20 @@ def test_mulF32_random():
 # ========================================================================
 
 # ================= Random testing for double-precision ==================
-expWidth = 11
-sigWidth = 53
-precision = expWidth + sigWidth
-tolerance = 0.00001
-
-BN  = mk_bits(expWidth + sigWidth)
-
-random.seed(precision)
-
 def test_mulF64_random():
   
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.00001
+
+  BN  = mk_bits(expWidth + sigWidth)
+
+  random.seed(a=None) # uses current system time for seed
+
   test_vector = []
   
-  for test in range(100):
+  for test in range(1000):
     a = get_rand(-1000000.0, 1000000.0, 6)
     b = get_rand(-1000000.0, 1000000.0, 6)
     out = a * b
@@ -360,6 +405,32 @@ def test_mulF64_random():
   
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), 
   test_vector,  precision, tolerance)
+# ========================================================================
+
+# ================ Double-precision hypothesis testing ===================
+@given( a = st.floats(min_value=-7e-120, max_value=7e+120),
+        b = st.floats(min_value=-7e-120, max_value=7e+120))
+@settings(deadline = None)
+def test_hypothesis_mulF64( a, b ):
+  
+  expWidth = 11
+  sigWidth = 53
+  precision = expWidth + sigWidth
+  tolerance = 0.000001
+  
+  BN  = mk_bits(expWidth + sigWidth)
+
+  out = a * b
+  
+  a = floatToFN(a, precision)
+  b = floatToFN(b, precision)
+  out = floatToFN(out, precision)
+  
+  run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
+      #  a         b         roundingMode   out*'),
+      [  BN(a),    BN(b),    B3(0),         BN(out), ],
+  ],  precision, tolerance)
+
 # ========================================================================
 
 
