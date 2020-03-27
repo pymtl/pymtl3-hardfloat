@@ -5,6 +5,7 @@
 
 # Setting up the pymtl3-hardfloat repo on brg-vip
 $ cd /work/global/<net_id>/
+<br>
 $ git clone https://github.com/cornell-brg/pymtl3-hardfloat.git
 
 # Setting up PyMTL3 on brg-vip
