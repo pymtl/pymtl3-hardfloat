@@ -7,8 +7,8 @@ It includes support for half-precision (16-bit), single-precision (32-bit), and 
 ```
 $ cd /work/global/<net_id>/  
 $ git clone https://github.com/cornell-brg/pymtl3-hardfloat.git  
-$ git checkout master
 $ cd pymtl3-hardfloat
+$ git checkout master
 $ HOME=$PWD
 ```
 
