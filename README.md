@@ -13,17 +13,23 @@ $ HOME=$PWD
 ```
 
 # Running C++ test cases provided by the Berkeley Hardfloat IP
+```
 $ cd $HOME/sim/HardFloat/test/build/Verilator-GCC  
 $ make test-level1 
+```
 
 *This command runs all level1 tests for all modules inside HardFloat. For more information on how to run specific commands please visit Berkeley's Hardfloat IP Documentation: http://www.jhauser.us/arithmetic/HardFloat-1/doc/HardFloat-test-Verilator.html*
 
 # Running PyMTL3 test cases which include directed, random, and hypothesis testing
+```
 $ cd $HOME/sim  
 $ mkdir build  
 $ cd build/  
 $ pytest ../HardFloat/test/ -v  
+```
 
 *This commands runs all PyMTL3 provided tests, which include testing for addition, multiplication, and multiply-add modules. For the detailed list of test files, simply execute the following command*   
 
+```
 $ ls $HOME/sim/HardFloat/test directory
+```
