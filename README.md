@@ -1,7 +1,5 @@
 # PyMTL3 wrapper of the Berkeley Hardfloat IP
-It includes support for half-precision (16-bit), single-precision (32-bit), and double-precision (64-bit) floating point addition, subtraction, and multiplication. 
-
-### The following tutorial allows you to run the entire test harness currently available for pymtl3-hardfloat, which include a C++ test suite from Berkeley, as well as a Python test suite provided by BRG. This tutorial assumes PyMTL3 is installed and sourced on brg-vip.
+It includes support for half-precision (16-bit), single-precision (32-bit), and double-precision (64-bit) floating point arithmetic (addition, subtraction, multiplication). The following tutorial allows you to run the entire test harness currently available for pymtl3-hardfloat, which include a C++ test suite from Berkeley, as well as a Python test suite provided by BRG. This tutorial assumes PyMTL3 is installed and sourced on brg-vip.
 
 ### Setting up the pymtl3-hardfloat repo on brg-vip
 ```
