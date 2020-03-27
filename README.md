@@ -4,9 +4,8 @@
 #### The following tutorial allows you to run the entire test harness currently available for pymtl3-hardfloat, which include a C++ test suite from Berkeley, as well as a Python test suite provided by BRG
 
 # Setting up the pymtl3-hardfloat repo on brg-vip
-$ cd /work/global/<net_id>/
-<br>
-$ git clone https://github.com/cornell-brg/pymtl3-hardfloat.git
+$ cd /work/global/<net_id>/  
+$ git clone https://github.com/cornell-brg/pymtl3-hardfloat.git  
 
 # Setting up PyMTL3 on brg-vip
 $
