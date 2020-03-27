@@ -31,5 +31,5 @@ $ pytest ../HardFloat/test/ -v
 *This commands runs all PyMTL3 provided tests, which include testing for addition, multiplication, and multiply-add modules. For the detailed list of test files, simply execute the following command*   
 
 ```
-$ ls $HOME/sim/HardFloat/test directory
+$ ls $HOME/sim/HardFloat/test 
 ```
