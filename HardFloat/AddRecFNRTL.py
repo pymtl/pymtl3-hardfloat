@@ -35,6 +35,7 @@ class AddRecFN( Placeholder, Component ):
     )
 
     s.config_verilog_import = VerilatorImportConfigs(
-      vl_Wno_list = ['WIDTH', 'MODDUP'], # to surpress some Verilator warnings
+      vl_Wno_list = ['WIDTH'], # to surpress some Verilator warnings
     )
 
+    s.verilog_translate_import = True
