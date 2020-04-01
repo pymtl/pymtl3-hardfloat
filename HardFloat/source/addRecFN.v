@@ -37,12 +37,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `include "HardFloat_consts.vi"
 `include "HardFloat_specialize.vi"
 
-/* ============= Added section to include some files ================== */
-// verilator lint_off MODDUP
-`include "includeFile.v"
-// verilator lint_on MODDUP
-/* ============================================================== */
-
 /*----------------------------------------------------------------------------
 *----------------------------------------------------------------------------*/
 

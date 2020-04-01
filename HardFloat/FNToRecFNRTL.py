@@ -23,8 +23,13 @@ class FNToRecFN( Placeholder, Component ):
     from os import path
     s.config_placeholder = VerilogPlaceholderConfigs(
       src_file   = path.dirname(__file__) + '/source/fNToRecFN.v',
-      #v_include  = [path.dirname(__file__) + '/source'],
       top_module = 'fNToRecFN',
+      v_include  = [ path.dirname(__file__) + '/source' ],
+      v_libs     = [
+        path.dirname(__file__) + '/source/HardFloat_primitives.v',
+        path.dirname(__file__) + '/source/isSigNaNRecFN.v',
+        path.dirname(__file__) + '/source/HardFloat_rawFN.v',
+      ],
       has_clk    = False,
       has_reset  = False,
     )
