@@ -7,3 +7,16 @@ testsoftfloat
 timesoftfloat
 build/*
 __pycache__
+
+build*/
+autom4te.cache/
+__pycache__/
+*.py[cod]
+.DS_Store
+.cache/
+.nfs*
+.pytest_cache
+.hypothesis
+*.v
+*.sv
+*.egg-info
