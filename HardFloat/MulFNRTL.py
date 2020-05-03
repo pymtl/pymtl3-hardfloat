@@ -11,9 +11,6 @@ from HardFloat.FNToRecFNRTL import FNToRecFN
 from HardFloat.MulRecFNRTL import MulRecFN
 # ===============================================================
 
-from pymtl3.passes.backends.verilog import \
-    VerilogPlaceholderConfigs, VerilatorImportConfigs, TranslationConfigs
-
 class MulFN( Component ):
 
   # Constructor

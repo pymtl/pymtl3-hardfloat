@@ -18,18 +18,18 @@ class AddFN( Component ):
   def construct( s, expWidth = 5, sigWidth = 11 ):
 
     # Declaring input and output ports
-    s.subOp          = InPort ( Bits1 )
-    s.a              = InPort ( mk_bits(expWidth + sigWidth) )
-    s.b              = InPort ( mk_bits(expWidth + sigWidth) )
-    s.roundingMode   = InPort ( Bits3 )
+    s.subOp          = InPort ()
+    s.a              = InPort ( expWidth + sigWidth )
+    s.b              = InPort ( expWidth + sigWidth )
+    s.roundingMode   = InPort ( 3 )
 
-    s.out            = OutPort ( mk_bits(expWidth + sigWidth) )
+    s.out            = OutPort ( expWidth + sigWidth )
 
     # Declaring wires
-    s.conv_a          = Wire( mk_bits(expWidth + sigWidth + 1) )
-    s.conv_b          = Wire( mk_bits(expWidth + sigWidth + 1) )
-    s.adder_out       = Wire( mk_bits(expWidth + sigWidth + 1) )
-    s.exception_flags = Wire( Bits5 )
+    s.conv_a          = Wire( expWidth + sigWidth + 1 )
+    s.conv_b          = Wire( expWidth + sigWidth + 1 )
+    s.adder_out       = Wire( expWidth + sigWidth + 1 )
+    s.exception_flags = Wire( 5 )
 
     # Instantiating converters and adder modules
     s.std_to_rec_conv_a  = FNToRecFN( expWidth = expWidth, sigWidth = sigWidth )
@@ -46,7 +46,7 @@ class AddFN( Component ):
     connect( s.b, s.std_to_rec_conv_b.in_ )
     connect( s.std_to_rec_conv_b.out, s.conv_b )
 
-    connect( b1(1), s.adder.control ) # control = 1 (slightly better)
+    connect( s.adder.control, 1 ) # control = 1 (slightly better)
     connect( s.conv_a, s.adder.a )
     connect( s.conv_b, s.adder.b )
     connect( s.roundingMode, s.adder.roundingMode )
@@ -60,6 +60,4 @@ class AddFN( Component ):
 
   # Line tracing
   def line_trace( s ):
-    return f"a = {bin(s.a)}, b = {bin(s.b)} out = {bin(s.out)}"
-
-
+    return f"a = {s.a.bin()}, b = {s.b.bin()} out = {s.out.bin()}"

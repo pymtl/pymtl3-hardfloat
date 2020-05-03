@@ -22,7 +22,6 @@ class RecFNToFN( Placeholder, Component ):
     from os import path
     srcdir = path.dirname(__file__) + path.sep + 'source' + path.sep
 
-
     s.set_metadata( VerilogPlaceholderPass.src_file, srcdir + 'recFNToFN.v' )
     s.set_metadata( VerilogPlaceholderPass.top_module, 'recFNToFN' )
     s.set_metadata( VerilogPlaceholderPass.v_include, [ srcdir ] )
