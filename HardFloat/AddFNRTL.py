@@ -6,9 +6,9 @@ from pymtl3 import *
 from pymtl3.stdlib.connects import connect_pairs
 
 # =========== Importing converters and adder modules ============
-from HardFloat.RecFNToFNRTL import RecFNToFN
-from HardFloat.FNToRecFNRTL import FNToRecFN
-from HardFloat.AddRecFNRTL import AddRecFN
+from .RecFNToFNRTL import RecFNToFN
+from .FNToRecFNRTL import FNToRecFN
+from .AddRecFNRTL import AddRecFN
 # ===============================================================
 
 class AddFN( Component ):
