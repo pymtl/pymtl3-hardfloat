@@ -33,8 +33,4 @@ class MulRecFN( Placeholder, Component ):
       has_reset  = False,
     )
 
-    s.config_verilog_import = VerilatorImportConfigs(
-      vl_Wno_list = ['WIDTH', 'MODDUP'], # to surpress some Verilator warnings
-    )
-
     s.verilog_translate_import = True
