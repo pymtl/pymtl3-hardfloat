@@ -27,7 +27,7 @@ class MulRecFN( Placeholder, Component ):
     from os import path
     s.config_placeholder = VerilogPlaceholderConfigs(
       src_file   = path.dirname(__file__) + '/source/mulRecFN.v',
-      #v_include  = [path.dirname(__file__) + '/source/RISCV'],
+      v_include  = [path.dirname(__file__) + '/source/'],
       top_module = 'mulRecFN',
       has_clk    = False,
       has_reset  = False,
