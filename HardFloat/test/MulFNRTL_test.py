@@ -31,12 +31,6 @@ round_odd         = 0b110
 # ========================================================================
 
 # =========================== Helper functions ===========================
-def abs_val( x ):
-  if(x < 0):
-    return -x
-  else:
-    return x
-
 def get_rand( low, high, precision ):
   val = round(random.uniform(low, high), precision)
 
@@ -55,10 +49,10 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
     dut.roundingMode @= tv[2]
 
   def tv_out( dut, tv ):
-    test_out = fNToFloat(tv[3], precision)
-    actual_out = fNToFloat(dut.out, precision)
+    test_out = fNToFloat(tv[3], precision=precision)
+    actual_out = fNToFloat(dut.out, precision=precision)
 
-    assert (abs_val(test_out - actual_out) < tolerance)
+    assert abs(test_out - actual_out) <= abs(tolerance*test_out)
 
   # Run the test
   dut.elaborate()
@@ -84,9 +78,9 @@ def test_mulF16_ones():
   b = 1.0
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -104,9 +98,9 @@ def test_mulF16_positive_positive():
   b = 51.41
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -124,9 +118,9 @@ def test_mulF16_positive_negative():
   b = -64.2
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -144,9 +138,9 @@ def test_mulF16_negative_negative():
   b = -51.41
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -167,9 +161,9 @@ def test_mulF32_ones():
   b = 1.0
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -187,9 +181,9 @@ def test_mulF32_positive_positive():
   b = 591.3031
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -207,9 +201,9 @@ def test_mulF32_positive_negative():
   b = -581.875
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -227,9 +221,9 @@ def test_mulF32_negative_negative():
   b = -121.221
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -250,9 +244,9 @@ def test_mulF64_ones():
   b = 1.0
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -270,9 +264,9 @@ def test_mulF64_positive_positive():
   b = 58285.0291
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -290,9 +284,9 @@ def test_mulF64_positive_negative():
   b = -12.59101
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -310,9 +304,9 @@ def test_mulF64_negative_negative():
   b = -5.92929192931823
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),
@@ -325,22 +319,22 @@ def test_mulF64_negative_negative():
 def test_mulF32_random():
 
   expWidth = 8
-  sigWidth = 23
+  sigWidth = 24
   precision = expWidth + sigWidth
-  tolerance = 0.00001
+  tolerance = 0.000001
 
   random.seed(a=None) # uses current system time for seed
 
   test_vector = []
 
   for test in range(1000):
-    a = get_rand(-100000.0, 100000.0, 4)
-    b = get_rand(-100000.0, 100000.0, 4)
+    a = get_rand(-10000.0, 10000.0, 4)
+    b = get_rand(-10000.0, 10000.0, 4)
     out = a * b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([a, b, 0, out])
 
@@ -355,7 +349,7 @@ def test_mulF64_random():
   expWidth = 11
   sigWidth = 53
   precision = expWidth + sigWidth
-  tolerance = 0.00001
+  tolerance = 0.000001
 
   random.seed(a=None) # uses current system time for seed
 
@@ -366,9 +360,9 @@ def test_mulF64_random():
     b = get_rand(-1000000.0, 1000000.0, 6)
     out = a * b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([a, b, 0, out])
 
@@ -389,9 +383,9 @@ def test_hypothesis_mulF64( a, b ):
 
   out = a * b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulFN(expWidth = expWidth, sigWidth = sigWidth), [
     #   a   b   roundingMode  out*'),

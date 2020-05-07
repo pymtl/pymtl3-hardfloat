@@ -31,7 +31,7 @@ round_odd         = 0b110
 # ========================================================================
 
 # =========================== Helper functions ===========================
-def abs_val( x ):
+def abs( x ):
   if(x < 0):
     return -x
   else:
@@ -39,7 +39,7 @@ def abs_val( x ):
 
 def get_rand( low, high, precision ):
   val = round(random.uniform(low, high), precision)
-  while abs_val(val) < 1:
+  while abs(val) < 1:
     val = round(random.uniform(low, high), precision)
 
   return val
@@ -58,10 +58,10 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
     dut.roundingMode @= tv[3]
 
   def tv_out( dut, tv ):
-    test_out = fNToFloat(tv[4], precision)
-    actual_out = fNToFloat(dut.out, precision)
+    test_out = fNToFloat(tv[4], precision=precision)
+    actual_out = fNToFloat(dut.out, precision=precision)
 
-    assert (abs_val(test_out - actual_out) < tolerance)
+    assert abs(test_out - actual_out) < tolerance
 
   # Run the test
   dut.elaborate()
@@ -85,9 +85,9 @@ def test_addF16_ones():
   b = 1.0
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp a   b   roundingMode  out*'),
@@ -105,9 +105,9 @@ def test_addF16_positive_positive():
   b = 51.41
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -125,9 +125,9 @@ def test_addF16_positive_negative():
   b = -64.2
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -145,9 +145,9 @@ def test_addF16_negative_negative():
   b = -51.41
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
   print(a,b,out)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
@@ -166,9 +166,9 @@ def test_subF16_positive_positive():
   b = 231.41
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -188,9 +188,9 @@ def test_subF16_positive_negative():
   b = -64.2
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -210,9 +210,9 @@ def test_subF16_negative_negative():
   b = -451.61
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -234,9 +234,9 @@ def test_addF32_ones():
   b = 1.0
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -256,9 +256,9 @@ def test_addF32_positive_positive():
   b = 591.3031
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -278,9 +278,9 @@ def test_addF32_positive_negative():
   b = -581.875
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -300,9 +300,9 @@ def test_addF32_negative_negative():
   b = -591.2021
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -322,9 +322,9 @@ def test_subF32_positive_positive():
   b = 12.5910
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -344,9 +344,9 @@ def test_subF32_positive_negative():
   b = -120.5
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -366,9 +366,9 @@ def test_subF32_negative_negative():
   b = -12.49102
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -390,9 +390,9 @@ def test_addF64_ones():
   b = 1.0
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -412,9 +412,9 @@ def test_addF64_positive_positive():
   b = 58285.0291
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -434,9 +434,9 @@ def test_addF64_positive_negative():
   b = -12.59101
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -456,9 +456,9 @@ def test_addF64_negative_negative():
   b = -5.92929192931823
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -478,9 +478,9 @@ def test_subF64_positive_positive():
   b = 55.1022
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -500,9 +500,9 @@ def test_subF64_positive_negative():
   b = -239484.000192
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -522,9 +522,9 @@ def test_subF64_negative_negative():
   b = -1293.10092
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -551,9 +551,9 @@ def test_addF32_random():
     b = get_rand(-1000.0, 1000.0, 4)
     out = a + b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([0, a, b, 0, out])
 
@@ -578,9 +578,9 @@ def test_subF32_random():
     b = get_rand(-1000.0, 1000.0, 4)
     out = a - b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([1, a, b, 0, out])
 
@@ -607,9 +607,9 @@ def test_addF64_random():
     b = get_rand(-1000000.0, 1000000.0, 6)
     out = a + b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([0, a, b, 0, out])
 
@@ -634,9 +634,9 @@ def test_subF64_random():
     b = get_rand(-3000.0, 3000.0, 6)
     out = a - b
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([1, a, b, 0, out])
 
@@ -657,9 +657,9 @@ def test_hypothesis_addF64( a, b ):
 
   out = a + b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
@@ -678,13 +678,12 @@ def test_hypothesis_subF64( a, b ):
 
   out = a - b
 
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),
-    [  0,     a,  b,  0,             out, ],
+    [  1,     a,  b,  0,             out, ],
   ],  precision, tolerance)
 # ========================================================================
-

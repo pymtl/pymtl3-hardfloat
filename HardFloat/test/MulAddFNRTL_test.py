@@ -33,12 +33,6 @@ def mul_add_op( a, b, c, op ):
   else:
     return -(a*b) - c
 
-def abs_val( x ):
-  if(x < 0):
-    return -x
-  else:
-    return x
-
 def get_rand( low, high, precision ):
   val = round(random.uniform(low, high), precision)
 
@@ -59,10 +53,10 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
     dut.roundingMode @= tv[4]
 
   def tv_out( dut, tv ):
-    test_out = fNToFloat(tv[5], precision)
-    actual_out = fNToFloat(dut.out, precision)
+    test_out = fNToFloat(tv[5], precision=precision)
+    actual_out = fNToFloat(dut.out, precision=precision)
 
-    assert (abs_val(test_out - actual_out) < tolerance)
+    assert abs(test_out - actual_out) <= abs(tolerance*test_out)
 
   # Run the test
   dut.elaborate()
@@ -91,10 +85,10 @@ def test_mulAddF16_ones():
     c = 1.0
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -116,10 +110,10 @@ def test_mulAddF16_positive():
     c = 7.0004
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -141,10 +135,10 @@ def test_mulAddF16_mixed():
     c = 17.04
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -166,10 +160,10 @@ def test_mulAddF16_negative():
     c = -3.040
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -194,10 +188,10 @@ def test_mulAddF32_ones():
     c = 1.0
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -219,10 +213,10 @@ def test_mulAddF32_positive():
     c = 32.301
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -244,10 +238,10 @@ def test_mulAddF32_mixed():
     c = 1041.92
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -269,10 +263,10 @@ def test_mulAddF32_negative():
     c = -0.019
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -297,10 +291,10 @@ def test_mulAddF64_ones():
     c = 1.0
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -322,10 +316,10 @@ def test_mulAddF64_positive():
     c = 549999.01
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -347,10 +341,10 @@ def test_mulAddF64_mixed():
     c = -1284.129001
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -372,10 +366,10 @@ def test_mulAddF64_negative():
     c = -34
     out = mul_add_op(a, b, c, op)
 
-    a = floatToFN(a, precision)
-    b = floatToFN(b, precision)
-    c = floatToFN(c, precision)
-    out = floatToFN(out, precision)
+    a = floatToFN(a, precision=precision)
+    b = floatToFN(b, precision=precision)
+    c = floatToFN(c, precision=precision)
+    out = floatToFN(out, precision=precision)
 
     test_vector.append([op, a, b, c, 0, out])
 
@@ -389,9 +383,9 @@ def test_mulAddF64_negative():
 def test_mulAddF32_random():
 
   expWidth = 8
-  sigWidth = 23
+  sigWidth = 24
   precision = expWidth + sigWidth
-  tolerance = 0.0001
+  tolerance = 0.00001
 
   random.seed(a=None) # uses current system time for seed
 
@@ -406,10 +400,10 @@ def test_mulAddF32_random():
     for op in range(4):
       out = mul_add_op(a, b, c, op)
 
-      a = floatToFN(a, precision)
-      b = floatToFN(b, precision)
-      c = floatToFN(c, precision)
-      out = floatToFN(out, precision)
+      a = floatToFN(a, precision=precision)
+      b = floatToFN(b, precision=precision)
+      c = floatToFN(c, precision=precision)
+      out = floatToFN(out, precision=precision)
 
       test_vector.append([op, a, b, c, 0, out])
 
@@ -438,10 +432,10 @@ def test_mulAddF64_random():
     for op in range(1):
       out = mul_add_op(a, b, c, op)
 
-      a = floatToFN(a, precision)
-      b = floatToFN(b, precision)
-      c = floatToFN(c, precision)
-      out = floatToFN(out, precision)
+      a = floatToFN(a, precision=precision)
+      b = floatToFN(b, precision=precision)
+      c = floatToFN(c, precision=precision)
+      out = floatToFN(out, precision=precision)
 
       test_vector.append([op, a, b, c, 0, out])
 
@@ -464,10 +458,10 @@ def test_hypothesis_mulAddF64( a, b, c ):
   out = a * b + c
 
   op = 0 # fixed at this mode
-  a = floatToFN(a, precision)
-  b = floatToFN(b, precision)
-  c = floatToFN(c, precision)
-  out = floatToFN(out, precision)
+  a = floatToFN(a, precision=precision)
+  b = floatToFN(b, precision=precision)
+  c = floatToFN(c, precision=precision)
+  out = floatToFN(out, precision=precision)
 
   run_tv_test( MulAddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  op   a   b   c   roundingMode  out*'),
@@ -475,5 +469,3 @@ def test_hypothesis_mulAddF64( a, b, c ):
   ],  precision, tolerance)
 
 # ========================================================================
-
-

@@ -125,7 +125,6 @@ def floatToFN( f, *, precision=None, exp_nbits=None, sig_nbits=None ):
 
 # ========= IEEE-754 format to Floating-point number converter ===========
 def fNToFloat( n, *, precision=None, exp_nbits=None, sig_nbits=None ):
-
   if precision is None:
     assert exp_nbits is not None and sig_nbits is not None, "Either precision or exp_nbits/sig_nbits should be None"
     precision = exp_nbits + sig_nbits + 1
@@ -136,6 +135,7 @@ def fNToFloat( n, *, precision=None, exp_nbits=None, sig_nbits=None ):
     exp_nbits = exp_width[i]
     sig_nbits = mantissa_width[i]
 
+  n = int(n)
   assert 0 <= n < 2**precision, f"{hex(n)} has more than {precision} bits"
 
   # Used to access arrays of exponent and mantissa
