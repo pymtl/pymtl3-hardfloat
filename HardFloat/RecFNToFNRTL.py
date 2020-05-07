@@ -28,5 +28,9 @@ class RecFNToFN( Placeholder, Component ):
       has_clk    = False,
       has_reset  = False,
     )
+    
+    s.config_verilog_import = VerilatorImportConfigs(
+      vl_Wno_list = ['MODDUP'], # to surpress some Verilator warnings
+    )
 
     s.verilog_translate_import = True
