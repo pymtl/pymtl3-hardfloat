@@ -122,7 +122,6 @@ def floatToFN( f, *, precision=None, exp_nbits=None, sig_nbits=None ):
 
 # ========================================================================
 
-
 # ========= IEEE-754 format to Floating-point number converter ===========
 def fNToFloat( n, *, precision=None, exp_nbits=None, sig_nbits=None ):
   if precision is None:
@@ -137,12 +136,6 @@ def fNToFloat( n, *, precision=None, exp_nbits=None, sig_nbits=None ):
 
   n = int(n)
   assert 0 <= n < 2**precision, f"{hex(n)} has more than {precision} bits"
-
-  # Used to access arrays of exponent and mantissa
-  # TODO support other exp/sig combinations
-  index  = int(math.log2(precision)) - 4
-  sig_nbits = mantissa_width[index]
-  exp_nbits = exp_width[index]
 
   # Split the bitmask into three parts
   sign_raw     = n >> (precision-1)

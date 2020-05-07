@@ -26,6 +26,18 @@ def get_rand( low, high, precision ):
 
 # ========================================================================
 
+def test_bfloat16():
+  exp_nbits = 8
+  sig_nbits = 7
+  # bfloat's precision sucks
+  tolerance = 0.01
+
+  in_float  = 17777.29
+  in_rec    = floatToFN(in_float, exp_nbits=exp_nbits, sig_nbits=sig_nbits)
+  out_float = fNToFloat(in_rec, exp_nbits=exp_nbits, sig_nbits=sig_nbits)
+
+  assert abs(in_float - out_float) <= abs(out_float*tolerance)
+
 # =================== Half-precision directed tests ======================
 
 def test_addF16_positive():
