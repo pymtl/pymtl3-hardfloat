@@ -1,3 +1,5 @@
+`ifndef __RISCV_HARDFLOAT_SPECIALIZE_V__
+`define __RISCV_HARDFLOAT_SPECIALIZE_V__
 
 /*============================================================================
 
@@ -50,3 +52,4 @@ module
 
 endmodule
 
+`endif /* __RISCV_HARDFLOAT_SPECIALIZE_V__ */

@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_MULRECFN_V__
+`define __HARDFLOAT_MULRECFN_V__
 
 /*============================================================================
 
@@ -235,3 +237,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_MULRECFN_V__ */

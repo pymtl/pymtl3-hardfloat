@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_SPECIALIZE_VI__
+`define __HARDFLOAT_SPECIALIZE_VI__
 
 /*============================================================================
 
@@ -37,9 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*----------------------------------------------------------------------------
 *----------------------------------------------------------------------------*/
 
-`ifndef PYMTL_HARDFLOAT_SPECIALIZE_VI
-`define PYMTL_HARDFLOAT_SPECIALIZE_VI
-
 module
     iNFromException#(parameter width = 1) (
         input signedOut,
@@ -53,4 +52,4 @@ module
 
 endmodule
 
-`endif /* PYMTL_HARDFLOAT_SPECIALIZE_VI */
+`endif /* __HARDFLOAT_SPECIALIZE_VI__ */

@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_CONSTS_VI__
+`define __HARDFLOAT_CONSTS_VI__
 
 /*============================================================================
 
@@ -56,3 +58,4 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `define flRoundOpt_neverUnderflows     4
 `define flRoundOpt_neverOverflows      8
 
+`endif /* __HARDFLOAT_CONSTS_VI__ */

@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_RECFNTOFN_V__
+`define __HARDFLOAT_RECFNTOFN_V__
 
 /*============================================================================
 
@@ -74,3 +76,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_RECFNTOFN_V__ */

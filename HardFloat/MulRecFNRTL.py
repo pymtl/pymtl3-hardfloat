@@ -37,4 +37,4 @@ class MulRecFN( Placeholder, Component ):
     s.set_metadata( VerilogPlaceholderPass.has_clk, False )
     s.set_metadata( VerilogPlaceholderPass.has_reset, False )
 
-    s.set_metadata( VerilatorImportPass.vl_Wno_list, ['WIDTH', 'MODDUP'] )
+    s.set_metadata( VerilatorImportPass.vl_Wno_list, ['WIDTH'] )

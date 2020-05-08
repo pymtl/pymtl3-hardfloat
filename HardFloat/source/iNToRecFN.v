@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_INTORECFN_V__
+`define __HARDFLOAT_INTORECFN_V__
 
 /*============================================================================
 
@@ -122,3 +124,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_INTORECFN_V__ */

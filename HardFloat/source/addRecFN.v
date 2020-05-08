@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_ADDRECFN_V__
+`define __HARDFLOAT_ADDRECFN_V__
 
 /*============================================================================
 
@@ -252,3 +254,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_ADDRECFN_V__ */

@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_RAWFN_VI__
+`define __HARDFLOAT_RAWFN_VI__
 
 /*============================================================================
 
@@ -362,3 +364,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_RAWFN_VI__ */
