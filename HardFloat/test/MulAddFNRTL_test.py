@@ -387,11 +387,13 @@ def test_mulAddF32_random():
   precision = expWidth + sigWidth
   tolerance = 0.00001
 
-  random.seed(a=None) # uses current system time for seed
+  random.seed(0) # uses current system time for seed
+
+  op = 0 # fixed at this mode
 
   test_vector = []
 
-  for test in range(1000):
+  for test in range(500):
 
     a = get_rand(-1000.0, 1000.0, 10)
     b = get_rand(-1000.0, 1000.0, 10)
@@ -408,7 +410,7 @@ def test_mulAddF32_random():
       test_vector.append([op, a, b, c, 0, out])
 
   run_tv_test( MulAddFN(expWidth = expWidth, sigWidth = sigWidth),
-  test_vector,  precision, tolerance)
+               test_vector,  precision, tolerance)
 
 # ========================================================================
 
@@ -420,16 +422,18 @@ def test_mulAddF64_random():
   precision = expWidth + sigWidth
   tolerance = 0.0001
 
-  random.seed(a=None) # uses current system time for seed
+  random.seed(0)
+
+  op = 0 # fixed at this mode
 
   test_vector = []
 
-  for test in range(1000):
+  for test in range(500):
     a = get_rand(-100000.0, 100000.0, 10)
     b = get_rand(-100000.0, 100000.0, 10)
     c = get_rand(-100000.0, 100000.0, 10)
 
-    for op in range(1):
+    for op in range(4):
       out = mul_add_op(a, b, c, op)
 
       a = floatToFN(a, precision=precision)
