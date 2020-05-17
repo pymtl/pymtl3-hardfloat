@@ -5,7 +5,7 @@
 from pymtl3 import *
 from pymtl3.stdlib.test import run_test_vector_sim
 from pymtl3.stdlib.test import TestVectorSimulator
-from pymtl3.passes.backends.verilog import VerilogPlaceholderPass
+from pymtl3.passes.backends.verilog import *
 
 import hypothesis
 from hypothesis import given
@@ -65,9 +65,11 @@ def run_tv_test( dut, test_vectors, precision, tolerance ):
 
   # Run the test
   dut.elaborate()
-  dut.verilog_translate_import = True
+
+  dut.set_metadata( VerilogTranslationImportPass.enable, True )
+
   dut.apply( VerilogPlaceholderPass() )
-  dut = TranslationImportPass()( dut )
+  dut = VerilogTranslationImportPass()( dut )
 
   sim = TestVectorSimulator( dut, test_vectors, tv_in, tv_out )
   sim.run_test()
@@ -148,7 +150,6 @@ def test_addF16_negative_negative():
   a = floatToFN(a, precision=precision)
   b = floatToFN(b, precision=precision)
   out = floatToFN(out, precision=precision)
-  print(a,b,out)
 
   run_tv_test( AddFN(expWidth = expWidth, sigWidth = sigWidth), [
     #  subOp  a   b   roundingMode   out*'),

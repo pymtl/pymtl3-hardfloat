@@ -3,9 +3,9 @@
 #=========================================================================
 
 from pymtl3 import *
-from pymtl3.passes.backends.verilog.VerilogPlaceholderPass import VerilogPlaceholderPass
+from pymtl3.passes.backends.verilog import *
 
-class AddRecFN( Placeholder, Component ):
+class AddRecFN( VerilogPlaceholder, Component ):
 
   # Constructor
 
@@ -40,4 +40,4 @@ class AddRecFN( Placeholder, Component ):
     s.set_metadata( VerilogPlaceholderPass.has_clk, False )
     s.set_metadata( VerilogPlaceholderPass.has_reset, False )
 
-    s.set_metadata( VerilatorImportPass.vl_Wno_list, ['WIDTH'] )
+    s.set_metadata( VerilogVerilatorImportPass.vl_Wno_list, ['WIDTH'] )
