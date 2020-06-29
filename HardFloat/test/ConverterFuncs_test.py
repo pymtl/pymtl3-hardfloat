@@ -3,8 +3,7 @@
 #=========================================================================
 
 from pymtl3 import *
-from pymtl3.stdlib.test import run_test_vector_sim
-from pymtl3.stdlib.test import TestVectorSimulator
+from pymtl3.stdlib.test_utils import run_test_vector_sim, TestVectorSimulator
 from pymtl3.passes.backends.verilog import VerilogPlaceholderPass
 from pymtl3.datatypes import strategies as pm_st
 
