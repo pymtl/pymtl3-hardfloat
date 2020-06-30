@@ -1,3 +1,5 @@
+`ifndef __8086_SSE_HARDFLOAT_SPECIALIZE_VI__
+`define __8086_SSE_HARDFLOAT_SPECIALIZE_VI__
 
 /*============================================================================
 
@@ -42,3 +44,4 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *----------------------------------------------------------------------------*/
 `define HardFloat_propagateNaNPayloads
 
+`endif /* __8086_SSE_HARDFLOAT_SPECIALIZE_VI__ */

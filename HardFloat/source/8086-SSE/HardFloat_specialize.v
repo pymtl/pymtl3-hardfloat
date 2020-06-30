@@ -1,3 +1,5 @@
+`ifndef __8086_SSE_HARDFLOAT_SPECIALIZE_V__
+`define __8086_SSE_HARDFLOAT_SPECIALIZE_V__
 
 /*============================================================================
 
@@ -159,3 +161,4 @@ module
 
 endmodule
 
+`endif /* __8086_SSE_HARDFLOAT_SPECIALIZE_V__ */

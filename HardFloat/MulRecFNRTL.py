@@ -3,34 +3,38 @@
 #=========================================================================
 
 from pymtl3 import *
-from pymtl3.passes.backends.verilog import \
-    VerilogPlaceholderConfigs, VerilatorImportConfigs, TranslationConfigs
+from pymtl3.passes.backends.verilog import *
 
-class MulRecFN( Placeholder, Component ):
+class MulRecFN( VerilogPlaceholder, Component ):
 
   # Constructor
 
-  def construct( s, expWidth = 5, sigWidth = 11 ):
+  def construct( s, expWidth=5, sigWidth=11 ):
 
     # Interface
-	
+
     s.control        = InPort ()
-    s.a              = InPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.b              = InPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.roundingMode   = InPort ( Bits3 ) 
-    
-    s.out            = OutPort ( mk_bits(expWidth + sigWidth + 1) )
-    s.exceptionFlags = OutPort ( Bits5 )
+    s.a              = InPort ( expWidth + sigWidth + 1 )
+    s.b              = InPort ( expWidth + sigWidth + 1 )
+    s.roundingMode   = InPort ( 3 )
+
+    s.out            = OutPort ( expWidth + sigWidth + 1 )
+    s.exceptionFlags = OutPort ( 5 )
 
     # Configurations
 
     from os import path
-    s.config_placeholder = VerilogPlaceholderConfigs(
-      src_file   = path.dirname(__file__) + '/source/mulRecFN.v',
-      v_include  = [path.dirname(__file__) + '/source/'],
-      top_module = 'mulRecFN',
-      has_clk    = False,
-      has_reset  = False,
-    )
+    srcdir = path.dirname(__file__) + path.sep + 'source' + path.sep
 
-    s.verilog_translate_import = True
+    s.set_metadata( VerilogPlaceholderPass.src_file, srcdir + 'mulRecFN.v' )
+    s.set_metadata( VerilogPlaceholderPass.top_module, 'mulRecFN' )
+    s.set_metadata( VerilogPlaceholderPass.v_include, [ srcdir ] )
+    s.set_metadata( VerilogPlaceholderPass.v_libs, [
+      srcdir + 'HardFloat_primitives.v',
+      srcdir + 'isSigNaNRecFN.v',
+      srcdir + 'HardFloat_rawFN.v',
+    ])
+    s.set_metadata( VerilogPlaceholderPass.has_clk, False )
+    s.set_metadata( VerilogPlaceholderPass.has_reset, False )
+
+    s.set_metadata( VerilogVerilatorImportPass.vl_Wno_list, ['WIDTH'] )

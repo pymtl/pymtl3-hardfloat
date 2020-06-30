@@ -1,3 +1,5 @@
+`ifndef __ARM_VFPV2_HARDFLOAT_SPECIALIZE_V__
+`define __ARM_VFPV2_HARDFLOAT_SPECIALIZE_V__
 
 /*============================================================================
 
@@ -182,3 +184,4 @@ module
 
 endmodule
 
+`endif /* __ARM_VFPV2_HARDFLOAT_SPECIALIZE_V__ */

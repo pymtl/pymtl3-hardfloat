@@ -1,3 +1,5 @@
+`ifndef __HARDFLOAT_PRIMITIVES_VI__
+`define __HARDFLOAT_PRIMITIVES_VI__
 
 /*============================================================================
 
@@ -171,3 +173,4 @@ module
 
 endmodule
 
+`endif /* __HARDFLOAT_PRIMITIVES_VI__ */

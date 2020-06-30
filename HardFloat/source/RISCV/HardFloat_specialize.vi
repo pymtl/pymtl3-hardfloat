@@ -1,3 +1,5 @@
+`ifndef __RISCV_HARDFLOAT_SPECIALIZE_VI__
+`define __RISCV_HARDFLOAT_SPECIALIZE_VI__
 
 /*============================================================================
 
@@ -47,3 +49,4 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `define HardFloat_signDefaultNaN 0
 `define HardFloat_fractDefaultNaN(sigWidth) {1'b1, {((sigWidth) - 2){1'b0}}}
 
+`endif /* __RISCV_HARDFLOAT_SPECIALIZE_VI__ */
