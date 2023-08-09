@@ -27,7 +27,6 @@ class MulFN( Component ):
     # Declaring wires
     s.conv_a          = Wire( expWidth + sigWidth + 1 )
     s.conv_b          = Wire( expWidth + sigWidth + 1 )
-    s.multiplier_out  = Wire( expWidth + sigWidth + 1 )
     s.exception_flags = Wire( 5 )
 
     # Instantiating converters and multiplier modules
@@ -50,10 +49,9 @@ class MulFN( Component ):
     connect( s.conv_b, s.multiplier.b )
     connect( s.roundingMode, s.multiplier.roundingMode )
 
-    connect( s.multiplier.out, s.multiplier_out )
     connect( s.multiplier.exceptionFlags, s.exception_flags)
 
-    connect( s.multiplier_out, s.rec_to_std_conv.in_ )
+    connect( s.multiplier.out, s.rec_to_std_conv.in_ )
     connect( s.rec_to_std_conv.out, s.out ) # connecting the output
 
   # Line tracing

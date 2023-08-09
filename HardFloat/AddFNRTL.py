@@ -28,7 +28,6 @@ class AddFN( Component ):
     # Declaring wires
     s.conv_a          = Wire( expWidth + sigWidth + 1 )
     s.conv_b          = Wire( expWidth + sigWidth + 1 )
-    s.adder_out       = Wire( expWidth + sigWidth + 1 )
     s.exception_flags = Wire( 5 )
 
     # Instantiating converters and adder modules
@@ -52,10 +51,9 @@ class AddFN( Component ):
     connect( s.roundingMode, s.adder.roundingMode )
     connect( s.subOp, s.adder.subOp )
 
-    connect( s.adder.out, s.adder_out )
     connect( s.adder.exceptionFlags, s.exception_flags)
 
-    connect( s.adder_out, s.rec_to_std_conv.in_ )
+    connect( s.adder.out, s.rec_to_std_conv.in_ )
     connect( s.rec_to_std_conv.out, s.out ) # connecting the output
 
   # Line tracing
